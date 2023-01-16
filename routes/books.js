@@ -1,20 +1,29 @@
-const booksController = require('../controllers/booksController.js');
+const bookController = require('../controllers/bookController.js');
+const authMiddleware = require('../middleware/authMiddleware');
 const express = require('express');
 const router = express.Router();
 
-router.get('/:_id', booksController.getBook);
+router.get('/:_id', authMiddleware.verifyUser, bookController.getBook);
 
-router.get('/', booksController.getBooks);
+router.get('/', authMiddleware.verifyUser, bookController.getBooks);
 
-router.post('/', booksController.addBooks);
+router.post('/', authMiddleware.verifyAdminEditor, bookController.addBooks);
 
-router.put('/:_id', booksController.updateBook);
+router.put('/:_id', authMiddleware.verifyAdminEditor, bookController.updateBook);
 
-router.patch('/:_id', booksController.updateBook);
+router.patch('/:_id', authMiddleware.verifyAdminEditor, bookController.updateBook);
 
-router.delete('/', booksController.removeBooks);
+router.delete('/', authMiddleware.verifyAdminEditor, bookController.removeBooks);
 
-router.delete('/:_id', booksController.removeBook);
+router.delete('/:_id', authMiddleware.verifyAdminEditor, bookController.removeBook);
+
+router.post('/:_id/borrowbook', authMiddleware.verifyUser, bookController.borrowBook);
+
+router.post('/borrowbook', authMiddleware.verifyUser, bookController.batchBorrowBook);
+
+router.post('/:_id/returnBook', authMiddleware.verifyUser, bookController.returnBook);
+
+router.post('/returnBook', authMiddleware.verifyUser, bookController.batchReturnBook);
 
 module.exports = router;
 

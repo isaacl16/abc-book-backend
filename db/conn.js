@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 exports.connectToDB = (callback) => {
-    mongoose.connect(process.env.REACT_APP_MONGODB_URI, {
+    mongoose.connect(process.env.MONGODB_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        dbName: process.env.REACT_APP_MONGODB_DBNAME
+        dbName: process.env.MONGODB_DBNAME
     });
     const conn = mongoose.connection;
     conn.on('error', () => {

@@ -3,7 +3,10 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema({
     _id: Schema.Types.ObjectId,
-    name: { type: String },
+    name: {
+        type: String,
+        required: true
+    },
     role: {
         type: String,
         enum: ['admin', 'editor', 'member'],
