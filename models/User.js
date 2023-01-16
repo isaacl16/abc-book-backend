@@ -5,6 +5,7 @@ const userSchema = new Schema({
     _id: Schema.Types.ObjectId,
     name: {
         type: String,
+        unique: true,
         required: true
     },
     role: {
@@ -12,7 +13,7 @@ const userSchema = new Schema({
         enum: ['admin', 'editor', 'member'],
         default: 'member'
     },
-    date_joined: { type: Date },
+    date_joined: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('Book', userSchema);
