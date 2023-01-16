@@ -72,7 +72,7 @@ exports.removeBook = (req, res) => {
     Book.findByIdAndDelete(req.params._id)
         .then((book) => {
             if (book) {
-                res.status(200).json(book);
+                res.status(200).json({ message: `${book.title} deleted` });
             } else {
                 res.status(404).json({ message: 'Item not found' });
             }
@@ -83,7 +83,18 @@ exports.removeBook = (req, res) => {
 };
 
 exports.removeBooks = (req, res) => {
-
+    const _ids = req.body._ids;
+    Book.deleteMany({ _id: { $in: _ids } })
+        .then(result => {
+            if (result.deletedCount > 0) {
+                res.status(200).json({ message: `${result.deletedCount} books were deleted` });
+            } else {
+                res.status(404).json({ message: 'No books were found with the given ids' });
+            }
+        })
+        .catch(err => {
+            res.status(400).json({ message: err.message });
+        });
 };
 
 exports.borrowBook = (req, res) => {
