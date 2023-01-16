@@ -9,7 +9,7 @@ router.get('/', authMiddleware.verifyAdminEditor, userController.getUsers);
 
 router.post('/', authMiddleware.verifyAdmin, userController.addUser);
 
-router.put('/', authMiddleware.verifyAdmin, userController.updateUser);
+router.put('/:_id', authMiddleware.verifyAdmin, userController.updateUser);
 
 router.delete('/:_id', authMiddleware.verifyAdmin, userController.removeUser);
 

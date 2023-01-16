@@ -7,7 +7,7 @@ exports.getBook = (req, res) => {
             if (book) {
                 res.status(200).json(book);
             } else {
-                res.status(404).json({ message: 'Item not found' });
+                res.status(404).json({ message: 'Book not found' });
             }
         }).catch((err) => {
             res.status(err.status || 500).json({ message: err.message });
@@ -60,7 +60,7 @@ exports.updateBook = (req, res) => {
             if (book) {
                 res.status(200).json(book);
             } else {
-                res.status(404).json({ message: 'Item not found' });
+                res.status(404).json({ message: 'Book not found' });
             }
         })
         .catch(err => {
@@ -74,7 +74,7 @@ exports.removeBook = (req, res) => {
             if (book) {
                 res.status(200).json({ message: `${book.title} deleted` });
             } else {
-                res.status(404).json({ message: 'Item not found' });
+                res.status(404).json({ message: 'Book not found' });
             }
         })
         .catch(err => {
