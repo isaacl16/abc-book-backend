@@ -4,7 +4,11 @@ const User = require('../models/User');
 exports.getUser = async (req, res) => {
     User.findById(req.params._id)
         .then((user) => {
-            res.status(200).json(user);
+            if (user) {
+                res.status(200).json(user);
+            } else {
+                res.status(404).json({ message: 'Item not found' });
+            }
         })
         .catch((err) => {
             res.status(err.status || 500).json({ message: err.message });
@@ -12,8 +16,7 @@ exports.getUser = async (req, res) => {
 };
 
 exports.getUsers = async (req, res) => {
-    const page = req.query.page;
-    const pageSize = req.query.pageSize;
+    const { page = 1, pageSize = 10 } = req.query;
     if (isNaN(page) || isNaN(pageSize)) {
         res.status(400).json({ message: 'NaN', page, pageSize });
         return;
