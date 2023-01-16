@@ -16,4 +16,4 @@ const userSchema = new Schema({
     date_joined: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model('Book', userSchema);
+module.exports = mongoose.model('User', userSchema);

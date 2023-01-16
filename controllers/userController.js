@@ -14,8 +14,10 @@ exports.getUser = async (req, res) => {
 exports.getUsers = async (req, res) => {
     const page = req.query.page;
     const pageSize = req.query.pageSize;
-    console.log(page);
-    console.log(pageSize);
+    if (isNaN(page) || isNaN(pageSize)) {
+        res.status(400).json({ message: 'NaN', page, pageSize });
+        return;
+    }
     User.countDocuments()
         .then(count => {
             User.find()
