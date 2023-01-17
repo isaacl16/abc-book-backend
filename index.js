@@ -1,6 +1,7 @@
 const express = require('express');
 const usersRouter = require('./routes/users');
 const booksRouter = require('./routes/books');
+const requestsRouter = require('./routes/requests');
 
 const dbo = require('./db/conn');
 const app = express();
@@ -11,6 +12,9 @@ app.use(express.json());
 app.use('/users', usersRouter);
 
 app.use('/books', booksRouter);
+
+app.use('/requests', requestsRouter);
+
 
 
 dbo.connectToDB(() => {

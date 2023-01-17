@@ -1,8 +1,6 @@
 const Book = require('../models/Book');
 const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
-const secret = process.env.JWT_SIGNING_KEY;
+const { decodeToken } = require('../utils/index');
 
 exports.getBook = (req, res) => {
     Book.findById(req.params._id)
@@ -101,8 +99,7 @@ exports.removeBooks = (req, res) => {
 
 exports.borrowBook = async (req, res) => {
     const _id = req.params._id;
-    const token = req.headers.authorization.split(' ')[1];
-    const decoded = jwt.verify(token, secret);
+    const decoded = decodeToken(req.headers.authorization.split(' ')[1]);
     try {
         const book = await Book.findById(_id);
         if (!book) {
@@ -124,10 +121,9 @@ exports.borrowBook = async (req, res) => {
 };
 
 exports.returnBook = async (req, res) => {
-    const token = req.headers.authorization.split(' ')[1];
     const _id = req.params._id;
     try {
-        const decoded = jwt.verify(token, secret);
+        const decoded = decodeToken(req.headers.authorization.split(' ')[1]);
         const book = await Book.findById(_id);
         if (!book) {
             return res.status(404).json({ message: 'Book not found' });
@@ -149,15 +145,8 @@ exports.returnBook = async (req, res) => {
 };
 
 exports.batchBorrowBook = (req, res) => {
-    const token = req.headers.authorization.split(' ')[1];
     const _ids = req.body._ids;
-    const decoded = jwt.verify(token, secret);
-    // const books = await Book.find({
-    //     '_id': {
-    //         $in: _ids
-    //     },
-    //     'borrowing_availability_status': 'available'
-    // });
+    const decoded = decodeToken(req.headers.authorization.split(' ')[1]);
     Book.updateMany(
         {
             _id: { $in: _ids },
@@ -180,10 +169,9 @@ exports.batchBorrowBook = (req, res) => {
 };
 
 exports.batchReturnBook = (req, res) => {
-    const token = req.headers.authorization.split(' ')[1];
     const _ids = req.body._ids;
     try {
-        const decoded = jwt.verify(token, secret);
+        const decoded = decodeToken(req.headers.authorization.split(' ')[1]);
         Book.updateMany(
             {
                 _id: { $in: _ids },
