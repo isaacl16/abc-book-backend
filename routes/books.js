@@ -17,13 +17,13 @@ router.delete('/', authMiddleware.verifyAdminEditor, bookController.removeBooks)
 
 router.delete('/:_id', authMiddleware.verifyAdminEditor, bookController.removeBook);
 
-router.post('/:_id/borrowbook', authMiddleware.verifyUser, bookController.borrowBook);
+router.patch('/:_id/borrowBook', authMiddleware.verifyUser, bookController.borrowBook);
 
-router.post('/borrowbook', authMiddleware.verifyUser, bookController.batchBorrowBook);
+router.patch('/borrowBook', authMiddleware.verifyUser, bookController.batchBorrowBook);
 
-router.post('/:_id/returnBook', authMiddleware.verifyUser, bookController.returnBook);
+router.patch('/:_id/returnBook', authMiddleware.verifyUser, bookController.returnBook);
 
-router.post('/returnBook', authMiddleware.verifyUser, bookController.batchReturnBook);
+router.patch('/returnBook', authMiddleware.verifyUser, bookController.batchReturnBook);
 
 module.exports = router;
 
