@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
 
-exports.getUser = (req, res) => {
-    User.findById(req.params._id)
+//Get a user by id
+exports.getUser = async (req, res) => {
+    await User.findById(req.params._id)
         .then((user) => {
             if (user) {
                 res.status(200).json(user);
@@ -15,15 +16,16 @@ exports.getUser = (req, res) => {
         });
 };
 
-exports.getUsers = (req, res) => {
+//Get all users
+exports.getUsers = async (req, res) => {
     const { page = 1, pageSize = 10 } = req.query;
     if (isNaN(page) || isNaN(pageSize)) {
         res.status(400).json({ message: 'NaN', page, pageSize });
         return;
     }
-    User.countDocuments()
-        .then(count => {
-            User.find()
+    await User.countDocuments()
+        .then(async count => {
+            await User.find()
                 .skip((page - 1) * pageSize)
                 .limit(pageSize)
                 .then(users => {
@@ -35,7 +37,8 @@ exports.getUsers = (req, res) => {
         });
 };
 
-exports.addUser = (req, res) => {
+//Add a new user
+exports.addUser = async (req, res) => {
     const reqBody = req.body;
     const _id = new mongoose.Types.ObjectId();
     const newUser = new User({
@@ -43,7 +46,7 @@ exports.addUser = (req, res) => {
         name: reqBody.name,
         role: reqBody.role,
     });
-    newUser.save()
+    await newUser.save()
         .then((user) => {
             console.log(`New user created: ${user}`);
             res.status(200).json(user);
@@ -54,8 +57,15 @@ exports.addUser = (req, res) => {
         });
 };
 
-exports.updateUser = (req, res) => {
-    User.findByIdAndUpdate(req.params._id, req.body, { runValidators: true, new: true })
+//Update a user by id
+exports.updateUser = async (req, res) => {
+    await User.findByIdAndUpdate(
+        req.params._id,
+        req.body,
+        {
+            runValidators: true, new: true
+        }
+    )
         .then(user => {
             if (user) {
                 res.status(200).json(user);
@@ -68,8 +78,9 @@ exports.updateUser = (req, res) => {
         });
 };
 
-exports.removeUser = (req, res) => {
-    User.findByIdAndDelete(req.params._id)
+//Remove a user by id
+exports.removeUser = async (req, res) => {
+    await User.findByIdAndDelete(req.params._id)
         .then((user) => {
             if (user) {
                 res.status(200).json({ message: `${user.name} deleted` });
@@ -82,9 +93,16 @@ exports.removeUser = (req, res) => {
         });
 };
 
-exports.removeUsers = (req, res) => {
+//Remove users in batches
+exports.removeUsers = async (req, res) => {
     const _ids = req.body._ids;
-    User.deleteMany({ _id: { $in: _ids } })
+    await User.deleteMany(
+        {
+            _id: {
+                $in: _ids
+            }
+        }
+    )
         .then(result => {
             if (result.deletedCount > 0) {
                 res.status(200).json({ message: `${result.deletedCount} users were deleted` });

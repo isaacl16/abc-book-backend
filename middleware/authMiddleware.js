@@ -1,14 +1,13 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
-const secret = process.env.JWT_SIGNING_KEY;
+const { decodeToken } = require('../utils/index');
 
+//Verify any user of the system
 const verifyUser = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized access' });
     }
     try {
-        const decoded = jwt.verify(token, secret);
+        const decoded = decodeToken(token);
         //pretend we verify with database if user token is valid
         if (decoded.role !== 'member' && decoded.role !== 'editor' && decoded.role !== 'admin') {
             return res.status(401).json({ message: 'Unauthorized access' });
@@ -20,13 +19,14 @@ const verifyUser = (req, res, next) => {
     next();
 };
 
+//Verify Admin and Editor users
 const verifyAdminEditor = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized access' });
     }
     try {
-        const decoded = jwt.verify(token, secret);
+        const decoded = decodeToken(token);
         //pretend we verify with database if user token is valid
         if (decoded.role !== 'admin' && decoded.role !== 'editor') {
             return res.status(401).json({ message: 'Unauthorized access' });
@@ -37,13 +37,14 @@ const verifyAdminEditor = (req, res, next) => {
     next();
 };
 
+//Verify Admin
 const verifyAdmin = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized access' });
     }
     try {
-        const decoded = jwt.verify(token, secret);
+        const decoded = decodeToken(token);
         //pretend we verify with database if user token is valid
         if (decoded.role !== 'admin') {
             return res.status(401).json({ message: 'Unauthorized access' });
