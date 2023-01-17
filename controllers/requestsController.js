@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Request = require('../models/Request');
 const { decodeToken } = require('../utils/index');
+const conn = require('../db/conn');
+const User = require('../models/User');
 
 exports.getRequest = (req, res) => {
     Request.findById(req.params._id)
@@ -17,7 +19,13 @@ exports.getRequest = (req, res) => {
 };
 
 exports.getRequests = (req, res) => {
-    const { page = 1, pageSize = 10, status } = req.query;
+    const { page = 1, pageSize = 10, status = null } = req.query;
+    let query;
+    if (status) {
+        query = { status: status };
+    } else {
+        query = {};
+    }
     if (isNaN(page) || isNaN(pageSize)) {
         res.status(400).json({ message: 'NaN', page, pageSize });
         return;
@@ -25,7 +33,7 @@ exports.getRequests = (req, res) => {
     console.log(page + ' ' + pageSize);
     Request.countDocuments()
         .then(count => {
-            Request.find({ status: status ? status : null })
+            Request.find(query)
                 .skip((page - 1) * pageSize)
                 .limit(pageSize)
                 .then(requests => {
@@ -37,7 +45,7 @@ exports.getRequests = (req, res) => {
         });
 };
 
-exports.crudRequest = (req, res) => {
+exports.crudRequest = async (req, res) => {
     const reqBody = req.body;
     const _id = new mongoose.Types.ObjectId();
     const decode = decodeToken(req.headers.authorization.split(' ')[1]);
@@ -97,12 +105,76 @@ exports.crudRequest = (req, res) => {
 //         });
 // };
 
-exports.approveUserRequest = (req, res) => {
+exports.approveRequest = async (req, res) => {
     const { _id } = req.params;
-    const request = Request.findById(_id);
-    console.log(request);
+    const decode = decodeToken(req.headers.authorization.split(' ')[1]);
+
+    let session = await conn.startSession();
+
+    try {
+        session.startTransaction();
+        let request = await Request.findById(_id);
+        if (!request) {
+            res.status(404).json({ message: 'Request not found' });
+        }
+        else if (request.status === 'pending') {
+            request = await Request.findByIdAndUpdate(
+                _id,
+                {
+                    $set: { status: 'approved', validated_by: decode.name }
+                },
+                { new: true }
+            );
+            if (request.action === 'update') {
+                const user = await User.findByIdAndUpdate(
+                    request.user_id,
+                    {
+                        $set: {
+                            name: request.name,
+                            role: request.role,
+                        }
+                    },
+                    { new: true }
+                );
+                if (!user) {
+                    await session.abortTransaction();
+                    res.status(404).json({ message: 'User not found' });
+                } else {
+                    res.status(200).json({ request: request, user: user });
+                }
+            } else if (request.action === 'add') {
+                const _id = new mongoose.Types.ObjectId();
+                const newUser = new User({
+                    _id: _id,
+                    name: request.name,
+                    role: request.role,
+                });
+                const user = await newUser.save()
+                    .then((user) => {
+                        console.log(`New user created: ${user}`);
+                        res.status(200).json(user);
+                    });
+                res.status(200).json(user);
+            } else if (request.action === 'remove') {
+                const user = await User.findByIdAndDelete(request.user_id);
+                if (!user) {
+                    await session.abortTransaction();
+                    res.status(404).json({ message: 'User not found' });
+                } else {
+                    res.status(200).json({ message: `${user.name} has been deleted` });
+                }
+            }
+        } else {
+            res.status(401).json({ message: 'Request has already been approved/rejected' });
+        }
+        await session.commitTransaction();
+    } catch (err) {
+        await session.abortTransaction();
+        res.status(err.status || 500).json({ message: err.message });
+    }
+    session.endSession();
 };
 
-exports.rejectUserRequest = (req, res) => {
+exports.rejectRequest = (req, res) => {
 
 };

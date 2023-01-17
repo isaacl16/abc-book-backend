@@ -11,7 +11,6 @@ const request = new Schema({
     },
     name: {
         type: String,
-        unique: true,
         validate: {
             validator: async function (value) {
                 if (!value) {
@@ -20,6 +19,11 @@ const request = new Schema({
                 const user = await User.findOne({ name: value });
                 if (this.action === 'add') {
                     if (user) {
+                        return false;
+                    }
+                    return true;
+                } else if (this.action === 'update') {
+                    if (!user._id.equals(this.user_id)) {
                         return false;
                     }
                     return true;

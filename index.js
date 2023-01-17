@@ -2,8 +2,7 @@ const express = require('express');
 const usersRouter = require('./routes/users');
 const booksRouter = require('./routes/books');
 const requestsRouter = require('./routes/requests');
-
-const dbo = require('./db/conn');
+const connectToMongoDB = require('./db/conn');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -15,10 +14,8 @@ app.use('/books', booksRouter);
 
 app.use('/requests', requestsRouter);
 
+connectToMongoDB;
 
-
-dbo.connectToDB(() => {
-    app.listen(PORT, () => {
-        console.log(`ABC Book backend server listening on port ${PORT}!`);
-    });
+app.listen(PORT, () => {
+    console.log(`ABC Book backend server listening on port ${PORT}!`);
 });

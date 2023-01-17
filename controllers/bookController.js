@@ -130,9 +130,15 @@ exports.returnBook = async (req, res) => {
         }
         if (book.last_borrower == decoded._id && book.borrowing_availability_status == 'checked_out') {
             // Update the book
-            Book.findByIdAndUpdate(req.params._id, {
-                $set: { last_borrower: decoded._id, borrowing_availability_status: 'available' }
-            }, { new: true, runValidators: true })
+            Book.findByIdAndUpdate(
+                req.params._id,
+                {
+                    $set: { last_borrower: decoded._id, borrowing_availability_status: 'available' }
+                },
+                {
+                    new: true, runValidators: true
+                }
+            )
                 .then((updatedBook) => {
                     res.status(200).json(updatedBook);
                 });

@@ -10,8 +10,8 @@ router.post('/', authMiddleware.verifyAdmin, requestsController.crudRequest);
 
 router.get('/:_id', authMiddleware.verifyAdmin, requestsController.getRequest);
 
-router.patch('/:_id/approve', authMiddleware.verifyAdmin, requestsController.approveUserRequest);
+router.patch('/:_id/approve', authMiddleware.verifyAdmin, requestsController.approveRequest);
 
-router.patch('/:_id/reject', authMiddleware.verifyAdmin, requestsController.rejectUserRequest);
+router.patch('/:_id/reject', authMiddleware.verifyAdmin, requestsController.rejectRequest);
 
 module.exports = router;
