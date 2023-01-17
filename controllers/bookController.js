@@ -99,19 +99,28 @@ exports.removeBooks = (req, res) => {
         });
 };
 
-exports.borrowBook = (req, res) => {
+exports.borrowBook = async (req, res) => {
+    const _id = req.params._id;
     const token = req.headers.authorization.split(' ')[1];
     const decoded = jwt.verify(token, secret);
-    Book.findByIdAndUpdate(req.params._id, {
-        $set: { last_borrower: decoded._id, borrowing_availability_status: 'checked_out' }
-    }, { new: true, runValidators: true })
-        .then((updatedBook) => {
-            res.status(200).json(updatedBook);
-        })
-        .catch((err) => {
-            res.status(err.status || 500).json({ message: err.message });
-        });
-
+    try {
+        const book = await Book.findById(_id);
+        if (!book) {
+            return res.status(404).json({ message: 'Book not found' });
+        }
+        if (book.borrowing_availability_status == 'available') {
+            Book.findByIdAndUpdate(_id, {
+                $set: { last_borrower: decoded._id, borrowing_availability_status: 'checked_out' }
+            }, { new: true, runValidators: true })
+                .then((updatedBook) => {
+                    res.status(200).json(updatedBook);
+                });
+        } else {
+            return res.status(401).json({ message: 'Book unavailable' });
+        }
+    } catch (err) {
+        res.status(err.status || 500).json({ message: err.message });
+    }
 };
 
 exports.returnBook = async (req, res) => {
@@ -123,7 +132,7 @@ exports.returnBook = async (req, res) => {
         if (!book) {
             return res.status(404).json({ message: 'Book not found' });
         }
-        if (book.last_borrower == decoded._id) {
+        if (book.last_borrower == decoded._id && book.borrowing_availability_status == 'checked_out') {
             // Update the book
             Book.findByIdAndUpdate(req.params._id, {
                 $set: { last_borrower: decoded._id, borrowing_availability_status: 'available' }
@@ -140,9 +149,58 @@ exports.returnBook = async (req, res) => {
 };
 
 exports.batchBorrowBook = (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const _ids = req.body._ids;
+    const decoded = jwt.verify(token, secret);
+    // const books = await Book.find({
+    //     '_id': {
+    //         $in: _ids
+    //     },
+    //     'borrowing_availability_status': 'available'
+    // });
+    Book.updateMany(
+        {
+            _id: { $in: _ids },
+            'borrowing_availability_status': 'available'
+        },
+        {
+            $set: { last_borrower: decoded._id, borrowing_availability_status: 'checked_out' }
+        })
+        .then(result => {
+            if (result.matchedCount > 0) {
+                res.status(200).json({ message: `${result.matchedCount} books were borrowed` });
+            } else {
+                res.status(404).json({ message: 'No books were found with the given ids' });
+            }
+        })
+        .catch((err) => {
+            res.status(err.status || 500).json({ message: err.message });
+        });
 
 };
 
 exports.batchReturnBook = (req, res) => {
-
+    const token = req.headers.authorization.split(' ')[1];
+    const _ids = req.body._ids;
+    try {
+        const decoded = jwt.verify(token, secret);
+        Book.updateMany(
+            {
+                _id: { $in: _ids },
+                'borrowing_availability_status': 'checked_out',
+                'last_borrower': decoded._id
+            },
+            {
+                $set: { borrowing_availability_status: 'available' }
+            })
+            .then(result => {
+                if (result.matchedCount > 0) {
+                    res.status(200).json({ message: `${result.matchedCount} books were returned` });
+                } else {
+                    res.status(404).json({ message: 'No books were found with the given ids' });
+                }
+            });
+    } catch (err) {
+        res.status(err.status || 500).json({ message: err.message });
+    }
 };
