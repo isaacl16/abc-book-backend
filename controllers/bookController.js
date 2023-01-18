@@ -12,32 +12,33 @@ exports.getBook = async (req, res) => {
                 res.status(404).json({ message: 'Book not found' });
             }
         }).catch((err) => {
+            console.log(err);
             res.status(err.status || 500).json({ message: err.message });
         });
 };
 
 // Get books
 exports.getBooks = async (req, res) => {
-    const { page = 1, pageSize = 10, title = null, genre = [], author = null, year_published = null, borrowing_availability_status = null, sort = null } = req.query;
+    const { page = 1, pageSize = 10, filter = null, sort = null } = req.query;
+    const filterObject = JSON.parse(filter);
     let query = {};
-    if (title) {
-        query['title'] = title;
+    if (filterObject.title) {
+        query['title'] = filterObject.title;
     }
-    if (genre && genre.length > 0) {
+    if (filterObject.genre && filterObject.genre.length > 0) {
         query['genre'] = {
-            $in: {
-                genre
-            }
+            $in: filterObject.genre,
+
         };
     }
-    if (author) {
-        query['author'] = author;
+    if (filterObject.author) {
+        query['author'] = filterObject.author;
     }
-    if (year_published) {
-        query['year_published'] = year_published;
+    if (filterObject.year_published) {
+        query['year_published'] = filterObject.year_published;
     }
-    if (borrowing_availability_status) {
-        query['borrowing_availability_status'] = borrowing_availability_status;
+    if (filterObject.borrowing_availability_status) {
+        query['borrowing_availability_status'] = filterObject.borrowing_availability_status;
     }
     if (isNaN(page) || isNaN(pageSize)) {
         return res.status(400).json({ message: 'NaN', page, pageSize });

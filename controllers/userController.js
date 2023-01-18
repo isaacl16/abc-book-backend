@@ -18,13 +18,14 @@ exports.getUser = async (req, res) => {
 
 //Get all users
 exports.getUsers = async (req, res) => {
-    const { page = 1, pageSize = 10, name = null, role = null, sort = null } = req.query;
+    const { page = 1, pageSize = 10, filter = null, sort = null } = req.query;
+    const filterObject = JSON.parse(filter);
     let query = {};
-    if (name) {
-        query['name'] = name;
+    if (filterObject.name) {
+        query['name'] = filterObject.name;
     }
-    if (role) {
-        query['role'] = role;
+    if (filterObject.role) {
+        query['role'] = filterObject.role;
     }
     if (isNaN(page) || isNaN(pageSize)) {
         res.status(400).json({ message: 'NaN', page, pageSize });
@@ -56,11 +57,9 @@ exports.addUser = async (req, res) => {
     });
     await newUser.save()
         .then((user) => {
-            console.log(`New user created: ${user}`);
             res.status(200).json(user);
         })
         .catch((err) => {
-            console.log(err);
             res.status(err.status || 500).json({ message: err.message });
         });
 };

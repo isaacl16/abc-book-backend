@@ -13,7 +13,6 @@ const verifyUser = (req, res, next) => {
             return res.status(401).json({ message: 'Unauthorized access' });
         }
     } catch (err) {
-        console.log('here');
         return res.status(401).json({ message: 'Unauthorized access' });
     }
     next();

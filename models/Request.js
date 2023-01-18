@@ -24,7 +24,6 @@ const request = new Schema({
                     return true;
                 } else if (this.action === 'update') {
                     if (!user._id.equals(this.user_id)) {
-                        console.log('in here');
                         return false;
                     }
                     return true;

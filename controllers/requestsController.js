@@ -21,26 +21,31 @@ exports.getRequest = async (req, res) => {
 
 // Get requests
 exports.getRequests = async (req, res) => {
-    const { page = 1, pageSize = 10, status = null, created_by = null, validated_by = null, name, sort = null } = req.query;
+    const { page = 1, pageSize = 10, filter = null, sort = null } = req.query;
+    const filterObject = JSON.parse(filter);
     let query = {};
-    if (status) {
-        query['status'] = status;
+    if (filterObject.status) {
+        query['status'] = filterObject.status;
     }
-    if (created_by) {
-        query['created_by'] = created_by;
+    if (filterObject.action) {
+        query['action'] = filterObject.action;
     }
-    if (validated_by) {
-        query['validated_by'] = validated_by;
+    if (filterObject.role) {
+        query['role'] = filterObject.role;
     }
-    if (name) {
-        query['name'] = name;
+    if (filterObject.created_by) {
+        query['created_by'] = filterObject.created_by;
     }
-    console.log(name);
+    if (filterObject.validated_by) {
+        query['validated_by'] = filterObject.validated_by;
+    }
+    if (filterObject.name) {
+        query['name'] = filterObject.name;
+    }
     if (isNaN(page) || isNaN(pageSize)) {
         res.status(400).json({ message: 'NaN', page, pageSize });
         return;
     }
-    console.log(page + ' ' + pageSize);
     await Request.countDocuments()
         .then(async (count) => {
             await Request.find(query)
@@ -80,11 +85,9 @@ exports.crudRequest = async (req, res) => {
 
     await newRequest.save()
         .then((request) => {
-            console.log(`New request created: ${request}`);
             res.status(200).json(request);
         })
         .catch((err) => {
-            console.log(err);
             res.status(err.status || 500).json({ message: err.message });
         });
 };
@@ -136,7 +139,6 @@ exports.approveRequest = async (req, res) => {
                 });
                 const user = await newUser.save()
                     .then((user) => {
-                        console.log(`New user created: ${user}`);
                         res.status(200).json(user);
                     });
                 res.status(200).json(user);
