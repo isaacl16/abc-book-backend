@@ -1,0 +1,739 @@
+{
+	"info": {
+		"_postman_id": "1631279b-857a-41c2-96fe-c544f0603b16",
+		"name": "ABC-Book",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24648698"
+	},
+	"item": [
+		{
+			"name": "requests",
+			"item": [
+				{
+					"name": "/requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/requests/?page=1&pageSize=10&sort={}&filter={\"action\": \"remove\"}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"requests",
+								""
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "page number"
+								},
+								{
+									"key": "pageSize",
+									"value": "10",
+									"description": "page size"
+								},
+								{
+									"key": "sort",
+									"value": "{}",
+									"description": "OPTIONAL object key - title, author, year_published.  values - 1 for ascending, -1 for descending"
+								},
+								{
+									"key": "filter",
+									"value": "{\"action\": \"remove\"}",
+									"description": "OPTIONAL action : add/remove/update, name : <string>, role : admin/editor/member, status : pending/approved/rejected, created_by : <string>, validated_by : <string>"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/requests/:_id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/requests/63c72677fe97d4a92aa635c7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"requests",
+								"63c72677fe97d4a92aa635c7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/requests",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M3MjNiODg4Y2NlOGNjNDcxNWQyOTMiLCJuYW1lIjoic2hpeWluZyIsInJvbGUiOiJhZG1pbiJ9.40apFCo9WRFmbyq6yxj3ACI0msx_jgxMoaB34FwXvA8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"kenny\",\r\n    \"role\": \"admin\",\r\n    \"action\": \"update\",\r\n    \"user_id\": \"63c75c4ffb4bb3f23d13b018\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/requests/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"requests",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/requests/:_id/approve",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M3MjNiODg4Y2NlOGNjNDcxNWQyOTMiLCJuYW1lIjoic2hpeWluZyIsInJvbGUiOiJhZG1pbiJ9.40apFCo9WRFmbyq6yxj3ACI0msx_jgxMoaB34FwXvA8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/requests/63c75d12a0cb5fb337d8f70b/approve",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"requests",
+								"63c75d12a0cb5fb337d8f70b",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/requests/:_id/reject",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/requests/63c729ade7f4e2959a0fed09/reject",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"requests",
+								"63c729ade7f4e2959a0fed09",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "books",
+			"item": [
+				{
+					"name": "/books/:_id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/books/63c590fdc20f3f8168e45451",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books",
+								"63c590fdc20f3f8168e45451"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/books",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M2NDVkODhmZGQyMTVlNzg4MmFmMmYiLCJuYW1lIjoiaXNhYWMiLCJyb2xlIjoiYWRtaW4ifQ.E5UQy3ufLD-Q3h-bWD99al-i6BLNmbqGnVXb1dQK788",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/books?page=1&pageSize=10&sort={}&filter={}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "{}",
+									"description": "OPTIONAL object key - title, author, year_published.  values - 1 for ascending, -1 for descending"
+								},
+								{
+									"key": "filter",
+									"value": "{}",
+									"description": "OPTIONAL title : <string>, genre : [<string>], author : <string>, year_published : <number>, borrowing_availability_status : available/checked_out"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/books/:_id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/books/63c5a179f14a8cdcff07c074",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books",
+								"63c5a179f14a8cdcff07c074"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/books",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_ids\": [\"63c5a179f14a8cdcff07c076\",\"63c5a4d4163068b573ae6ada\",\"63c5a4d7163068b573ae6adc\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/books/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/books",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"\",\r\n    \"description\": \"\",\r\n    \"genre\": [],\r\n    \"author\": \"\"\r\n    \"year_published\": \"<number>\",\r\n    \"borrowing_availability_status\": \"available/checked_out\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/books/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/books/:_id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"\",\r\n    \"description\": \"\",\r\n    \"genre\": [],\r\n    \"author\": \"\"\r\n    \"year_published\": \"<number>\",\r\n    \"borrowing_availability_status\": \"available/checked_out\"\r\n    \"last_borrower\": \"<object _uid>\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/books/63c590fdc20f3f8168e45451",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books",
+								"63c590fdc20f3f8168e45451"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "/users/:_id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/63c5a6a296f6c57e7f62e979",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"63c5a6a296f6c57e7f62e979"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users?page=1&pageSize=10&sort={}&filter={}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "{}",
+									"description": "OPTIONAL object key - name,  values - 1 for ascending, -1 for descending"
+								},
+								{
+									"key": "filter",
+									"value": "{}",
+									"description": "OPTIONAL name: string, role: admin,editor,member"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/:_id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/63c5a68796f6c57e7f62e96f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"63c5a68796f6c57e7f62e96f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_ids\": [\"63c5a68e96f6c57e7f62e973\",\"63c5a69196f6c57e7f62e975\",\"63c5a68796f6c57e7f62e96f\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"role\": \"admin/editor/member\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/users/:_id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxIiwibmFtZSI6ImlzYWFjIiwicm9sZSI6ImFkbWluIn0.oV3JdHP2HDSezSYLCmkvh-2vVjqeLqjXvxhRVVJvQQw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"\",\r\n    \"role\": \"admin/editor/member\",\r\n    \"date_joined\": \"2023-01-16T19:33:27.511Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/63c5a68796f6c57e7f62e96f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"63c5a68796f6c57e7f62e96f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "borrow/return",
+			"item": [
+				{
+					"name": "/books/:_id/borrowBook",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M2NDVkODhmZGQyMTVlNzg4MmFmMmYiLCJuYW1lIjoiaXNhYWMiLCJyb2xlIjoiYWRtaW4ifQ.E5UQy3ufLD-Q3h-bWD99al-i6BLNmbqGnVXb1dQK788",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/books/63c5a4d8163068b573ae6ade/borrowBook",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books",
+								"63c5a4d8163068b573ae6ade",
+								"borrowBook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/books/borrowBook",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M2NDVkODhmZGQyMTVlNzg4MmFmMmYiLCJuYW1lIjoiaXNhYWMiLCJyb2xlIjoiYWRtaW4ifQ.E5UQy3ufLD-Q3h-bWD99al-i6BLNmbqGnVXb1dQK788",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_ids\" : [\"63c5a4d8163068b573ae6ade\", \"63c5a4d8163068b573ae6ae0\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/books/borrowBook",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books",
+								"borrowBook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/books/:_id/returnBook",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M2NDVkODhmZGQyMTVlNzg4MmFmMmYiLCJuYW1lIjoiaXNhYWMiLCJyb2xlIjoiYWRtaW4ifQ.E5UQy3ufLD-Q3h-bWD99al-i6BLNmbqGnVXb1dQK788",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/books/63c5a4d8163068b573ae6ade/returnBook",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books",
+								"63c5a4d8163068b573ae6ade",
+								"returnBook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/books/returnBook",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2M2NDVkODhmZGQyMTVlNzg4MmFmMmYiLCJuYW1lIjoiaXNhYWMiLCJyb2xlIjoiYWRtaW4ifQ.E5UQy3ufLD-Q3h-bWD99al-i6BLNmbqGnVXb1dQK788",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_ids\" : [\"63c5a4d8163068b573ae6ade\", \"63c5a4d8163068b573ae6ae0\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/books/returnBook",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"books",
+								"returnBook"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

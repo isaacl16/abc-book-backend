@@ -27,11 +27,11 @@ To run in development mode, use the command `npm run dev`
 2. Last borrower is always set to the most recent or current borrower
 3. Editor is allowed to access User Management but can only view the users and cannot add, remove and update users
 4. Log in service is already implemented using JWT
-    * In parts of the code implementation, we will assume that the token has been validated with the database
+    * In parts of the code implementation, we will assume that the token has been validated
 
 
 ## Additional information
-To test the APIs on from the backed service, we will be using a self-generated JWT which is used for the sole purpose of authorization when making calling upon an API. We can use the following [link]("https://jwt.io/") to generate ourselves a token.
+To test the APIs on from the backed service, we will be using a self-generated JWT which is used for the sole purpose of authorization when making calling upon an API. We can use the following [link]("https://jwt.io/") to generate a JWT
 
 The payload should contain the following:
 
@@ -41,12 +41,11 @@ The payload should contain the following:
 
 The Verify Signature requires a secret key. Use the JWT_SIGNING_KEY in the .env for this. (You should never expose your secret key)
 
-Ensure to include the token in request headers. It should look something like this
+Ensure to include the token in request headers. 
 ```
-{
-    Authorization: Bearer <JWT>
-}
+Authorization: Bearer <JWT>
 ```
+
 
 
 ## Project Structure
@@ -57,12 +56,14 @@ The project is structured in the following way:
     * `middleware/`: Contains middleware for handling authentication
     * `models/`: Contains the Mongoose models for the User, Book and User objects
     * `node_modules`: Contains downloaded packages
-    * `routes/`: Contains the Express.js routes for handling the CRUD
+    * `routes/`: Contains the Express.js routes for handling the CRUD APIs
     * `utils`: Contains utility functions
     * `index.js`: The entry point of the application, where the server is started and the routes are imported.
     * `.env`: Contains environment configuration settings
 
 ## API Design
+
+A reference to the APIs has been uploaded to the project. Click [here]("https://github.com/isaacl16/abc-book-backend/blob/master/ABC-Book.postman_collection.json") to view.
 
 ### Users
 * `GET /users`: Retrieves a list of all users (including pagination)
@@ -103,39 +104,16 @@ The APIs are designed to follow the principles of Representational State Transfe
 
 Authentication middleware is also implemented to check for valid tokens (assumed to be done), and to verify that the role in the token has been given authorization to perform or call the API. This ensures that only authenticated and authorized users can access the API.
 
-```
-const verifyAdmin = (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
-    if (!token) {
-        return res.status(401).json({ message: 'Unauthorized access' });
-    }
-    try {
-        const decoded = decodeToken(token);
-        //pretend we have already verified with database if token is valid
-        if (decoded.role !== 'admin') {
-            return res.status(401).json({ message: 'Unauthorized access' });
-        }
-    } catch (err) {
-        return res.status(401).json({ message: 'Unauthorized access' });
-    }
-    next();
-};
-```
-
 In addition to the standard CRUD operations on User and Book objects, the project also includes the features for borrowing and returning books. This feature is implemented using PATCH HTTP requests, which allows for partial updates of the resource, making it more efficient and appropriate for this use case.
 
-Finally, for the implementation of the maker checker rule, a request system is implemented. The system is designed using a request model, which allows admins to submit requests for adding, removing, and updating users. The model includes fields for the user's information, the action to be taken, the request's status, the owner of the request, and the name of the admin who has taken action on the request. To ensure oversight and accountability, requests are reviewed and acted upon by admins who are not the owner of the request. This ensures that multiple parties review the requests, and any actions taken are done so with proper authorization. This provides an additional layer of security and ensures that only authorized changes are made to the system.
+Finally, for the implementation of the maker checker rule, a request system is implemented. The system is designed using a request model, which allows admins to submit requests for adding, removing, and updating users. The model includes fields for the user's information, the action to be taken, the request's status, the name of the admin owner of the request, and the name of the admin who has taken action on the request. To ensure oversight and accountability, requests are reviewed and acted upon by admins who are not the owner of the request. This ensures that multiple parties review the requests, and any actions taken are done so with proper authorization. This provides an additional layer of security and ensures that only authorized changes are made to the system.
 
 ## Scalability
-The overall structure of project designed with the idea of modularity kept in mind. This helps when it comes to scalability and future changes such as converting it to a microservice architecture where code has already been written such that they are not too dependant on each other.
 
-aside from that Asynchronous programming is used to handle large number of requests. This way, the application can handle requests at the same time without waiting for a response from each request. 
+Adoptation of the stateless programming paradigm where the state of the system is not stored in memory but instead in an external data storage like MongoDB. This approach allows for easy scalability as new instances can be added without the need to share the state, enabling horizontal scaling to handle increased traffic and meet the demands of a growing user base. Additionally, this approach enhances the flexibility and maintainability of the system by reducing dependencies between different instances, making it simpler to update and modify individual parts of the system independently.
 
-Database optimization with the use sharding and indexing will allow for better performances and scalability of the database 
+In order to enhance the scalability of the database, sharding and indexing are implemented as an optimization technique. Sharding is the process of horizontally partitioning data across multiple servers, allowing for the distribution of data and better management of large sets of data. This improves the scalability of the database, as new servers can be added to handle increased traffic and larger data sets. Indexing is a technique that improves the performance of the database by creating a data structure that allows for faster retrieval of data. By indexing the relevant fields in the collections, it allows for faster searching and sorting of data which can improve the overall performance of the database and allows the system to scale better. Together, these techniques allow the database to handle a large number of requests and a large amount of data, improving its scalability and performance.
 
-Aside from the code level, we can add in the addition of load balances and auto-scaling groups which allows for addition of more servers to handle increased traffic
-
-Elasticsearch can also be integrated to help with full text searches especially while searching for book titles in mongodb
 
 
 
