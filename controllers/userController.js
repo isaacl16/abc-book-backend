@@ -18,14 +18,22 @@ exports.getUser = async (req, res) => {
 
 //Get all users
 exports.getUsers = async (req, res) => {
-    const { page = 1, pageSize = 10 } = req.query;
+    const { page = 1, pageSize = 10, name = null, role = null, sort = null } = req.query;
+    let query = {};
+    if (name) {
+        query['name'] = name;
+    }
+    if (role) {
+        query['role'] = role;
+    }
     if (isNaN(page) || isNaN(pageSize)) {
         res.status(400).json({ message: 'NaN', page, pageSize });
         return;
     }
     await User.countDocuments()
         .then(async count => {
-            await User.find()
+            await User.find(query)
+                .sort(JSON.parse(sort))
                 .skip((page - 1) * pageSize)
                 .limit(pageSize)
                 .then(users => {

@@ -18,13 +18,34 @@ exports.getBook = async (req, res) => {
 
 // Get books
 exports.getBooks = async (req, res) => {
-    const { page = 1, pageSize = 10 } = req.query;
+    const { page = 1, pageSize = 10, title = null, genre = [], author = null, year_published = null, borrowing_availability_status = null, sort = null } = req.query;
+    let query = {};
+    if (title) {
+        query['title'] = title;
+    }
+    if (genre && genre.length > 0) {
+        query['genre'] = {
+            $in: {
+                genre
+            }
+        };
+    }
+    if (author) {
+        query['author'] = author;
+    }
+    if (year_published) {
+        query['year_published'] = year_published;
+    }
+    if (borrowing_availability_status) {
+        query['borrowing_availability_status'] = borrowing_availability_status;
+    }
     if (isNaN(page) || isNaN(pageSize)) {
         return res.status(400).json({ message: 'NaN', page, pageSize });
     }
     await Book.countDocuments()
         .then(async (count) => {
-            await Book.find()
+            await Book.find(query)
+                .sort(JSON.parse(sort))
                 .skip((page - 1) * pageSize)
                 .limit(pageSize)
                 .then((books) => {

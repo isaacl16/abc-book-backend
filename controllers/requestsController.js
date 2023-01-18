@@ -21,13 +21,21 @@ exports.getRequest = async (req, res) => {
 
 // Get requests
 exports.getRequests = async (req, res) => {
-    const { page = 1, pageSize = 10, status = null } = req.query;
-    let query;
+    const { page = 1, pageSize = 10, status = null, created_by = null, validated_by = null, name, sort = null } = req.query;
+    let query = {};
     if (status) {
-        query = { status: status };
-    } else {
-        query = {};
+        query['status'] = status;
     }
+    if (created_by) {
+        query['created_by'] = created_by;
+    }
+    if (validated_by) {
+        query['validated_by'] = validated_by;
+    }
+    if (name) {
+        query['name'] = name;
+    }
+    console.log(name);
     if (isNaN(page) || isNaN(pageSize)) {
         res.status(400).json({ message: 'NaN', page, pageSize });
         return;
@@ -36,6 +44,7 @@ exports.getRequests = async (req, res) => {
     await Request.countDocuments()
         .then(async (count) => {
             await Request.find(query)
+                .sort(JSON.parse(sort))
                 .skip((page - 1) * pageSize)
                 .limit(pageSize)
                 .then((requests) => {

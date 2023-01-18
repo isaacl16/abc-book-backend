@@ -5,7 +5,8 @@ const bookSchema = new Schema({
     _id: Schema.Types.ObjectId,
     title: {
         type: String,
-        required: true
+        required: true,
+        index: true
     },
     description: {
         type: String,
@@ -17,14 +18,16 @@ const bookSchema = new Schema({
     ],
     author: {
         type: String,
+        index: true
     },
     year_published: {
         type: Number,
+        index: true
     },
     borrowing_availability_status: {
         type: String,
         enum: ['available', 'checked_out'],
-        default: 'available'
+        default: 'available',
     },
     last_borrower: {
         type: mongoose.Schema.Types.ObjectId,

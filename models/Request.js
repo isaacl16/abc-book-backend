@@ -24,6 +24,7 @@ const request = new Schema({
                     return true;
                 } else if (this.action === 'update') {
                     if (!user._id.equals(this.user_id)) {
+                        console.log('in here');
                         return false;
                     }
                     return true;
@@ -36,7 +37,8 @@ const request = new Schema({
 
             },
             message: 'user already exists'
-        }
+        },
+        index: true
     },
     role: {
         type: String,
@@ -61,11 +63,13 @@ const request = new Schema({
     },
     created_by: {
         type: String,
-        required: true
+        required: true,
+        index: true
     },
     validated_by: {
         type: String,
-        default: null
+        default: null,
+        index: true,
     },
     date_created: { type: Date, default: Date.now },
 });

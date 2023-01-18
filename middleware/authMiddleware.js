@@ -8,7 +8,7 @@ const verifyUser = (req, res, next) => {
     }
     try {
         const decoded = decodeToken(token);
-        //pretend we verify with database if user token is valid
+        //pretend we have already verified token is valid
         if (decoded.role !== 'member' && decoded.role !== 'editor' && decoded.role !== 'admin') {
             return res.status(401).json({ message: 'Unauthorized access' });
         }
@@ -27,7 +27,7 @@ const verifyAdminEditor = (req, res, next) => {
     }
     try {
         const decoded = decodeToken(token);
-        //pretend we verify with database if user token is valid
+        //pretend we have already verified token is valid
         if (decoded.role !== 'admin' && decoded.role !== 'editor') {
             return res.status(401).json({ message: 'Unauthorized access' });
         }
@@ -45,7 +45,7 @@ const verifyAdmin = (req, res, next) => {
     }
     try {
         const decoded = decodeToken(token);
-        //pretend we verify with database if user token is valid
+        //pretend we have already verified token is valid
         if (decoded.role !== 'admin') {
             return res.status(401).json({ message: 'Unauthorized access' });
         }
