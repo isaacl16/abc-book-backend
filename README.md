@@ -63,7 +63,7 @@ The project is structured in the following way:
 
 ## API Design
 
-A reference to the APIs has been uploaded to the project. Click [here]("https://github.com/isaacl16/abc-book-backend/blob/master/ABC-Book.postman_collection.json") to view.
+A reference to the APIs has been uploaded to the project. Click [here](https://github.com/isaacl16/abc-book-backend/blob/master/ABC-Book.postman_collection.json) to view.
 
 ### Users
 * `GET /users`: Retrieves a list of all users (including pagination)
